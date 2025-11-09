@@ -7,7 +7,7 @@ export const addToCart = async (req, res) => {
     const userId = req.user.id; // from JWT
     const { productId, quantity } = req.body;
 
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).lean();
     if (!product) return res.status(404).json({ message: "Product not found" });
 
     let cart = await Cart.findOne({ user: userId });
@@ -17,7 +17,7 @@ export const addToCart = async (req, res) => {
     }
 
     // Check if product already in cart
-    const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
+    const itemIndex = cart.items.findIndex(item => item.product.toString() === productId).lean();
 
     if (itemIndex > -1) {
       // Product already exists, update quantity
@@ -38,7 +38,7 @@ export const addToCart = async (req, res) => {
 export const getCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const cart = await Cart.findOne({ user: userId }).populate("items.product");
+    const cart = await Cart.findOne({ user: userId }).populate("items.product").lean();
 
     if (!cart) return res.status(200).json({ items: [] });
 
