@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // change after deployment
+  baseURL: "https://e-commerce-backend-zuxw.onrender.com", // change after deployment
 });
 
 // Add token to headers automatically
