@@ -10,25 +10,34 @@ import orderRoutes from "./routes/orderRoutes.js";
 dotenv.config();
 const app = express();
 
-// Middleware
-app.use(cors());
+// ===== Middleware =====
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",                // for local testing
+      "https://e-commerce-frontend-768f.onrender.com" // replace with your actual frontend domain
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
-// DB connection
+// ===== Database Connection =====
 connectDB();
 
-// Simple test route
+// ===== Root Test Route =====
 app.get("/", (req, res) => {
-  res.send("E-commerce Backend is running...");
+  res.send("✅ E-commerce Backend is running successfully...");
 });
 
-// Routes
+// ===== API Routes =====
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 
-// Start server
-
+// ===== Start Server =====
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
